@@ -2,6 +2,8 @@ from typing import Optional
 import pytchat
 import time
 import subprocess
+import os
+from dotenv import load_dotenv
 
 def save_comment_hdfs(hdfs_file_path: str, comment: str) -> None:
     """
@@ -47,8 +49,9 @@ def listen_to_livestream(video_id: str, hdfs_file_path: str) -> None:
         time.sleep(1)
 
 if __name__ == "__main__":
-    # Actual livestream video ID
-    VIDEO_ID = "jfKfPfyJRdk"
+    load_dotenv()
+
+    VIDEO_ID = os.getenv('VIDEO_ID') 
     # Save into HDFS!
     HDFS_FILE_PATH = "/youtube_live_comments/comments.txt"
 
