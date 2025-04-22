@@ -1,0 +1,14 @@
+<configuration>
+    <property>
+        <name>dfs.namenode.name.dir</name>
+        <value>file:///opt/hadoop/data/nameNode</value> <!-- Directory for NameNode data -->
+    </property>
+    <property>
+        <name>dfs.datanode.data.dir</name>
+        <value>file:///opt/hadoop/data/dataNode</value> <!-- Directory for DataNode data -->
+    </property>
+    <property>
+        <name>dfs.replication</name>
+        <value>1</value> <!-- HDFS data replication factor -->
+    </property>
+</configuration>
