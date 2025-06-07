@@ -56,6 +56,43 @@ services:
       hdfs_network:
         ipv4_address: 172.20.0.4
 
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.0.0
+    container_name: zookeeper
+    hostname: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_HEAP_OPTS: "-Xmx512M -Xms512M" # Memory limits
+    networks:
+      hdfs_network:
+        ipv4_address: 172.20.0.5
+
+  kafka:
+    image: confluentinc/cp-kafka:7.0.0
+    container_name: kafka
+    hostname: kafka
+    depends_on:
+      - zookeeper
+      - namenode
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"
+      KAFKA_HEAP_OPTS: "-Xmx1G -Xms1G"
+      KAFKA_NUM_PARTITIONS: 3
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 2
+    ports:
+      - "9092:9092"
+    volumes:
+      - ./kafka_data:/var/lib/kafka/data # Persistent storage
+    networks:
+      hdfs_network:
+        ipv4_address: 172.20.0.6
+
 networks:
   hdfs_network:
     name: hdfs_network
