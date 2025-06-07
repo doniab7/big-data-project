@@ -58,6 +58,7 @@ services:
 
 networks:
   hdfs_network:
+    name: hdfs_network
     ipam:
       driver: default
       config:
