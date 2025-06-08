@@ -93,6 +93,25 @@ services:
       hdfs_network:
         ipv4_address: 172.20.0.6
 
+  spark:
+    image: bitnami/spark:3.4.1
+    container_name: spark
+    hostname: spark
+    user: root
+    environment:
+      - SPARK_MODE=master
+      - SPARK_LOCAL_DIRS=/tmp
+    volumes:
+      - ./app:/app  # Mount your Scala app
+    depends_on:
+      - kafka
+      - namenode
+    ports:
+      - "4040:4040"  
+    networks:
+      hdfs_network:
+        ipv4_address: 172.20.0.7
+
 networks:
   hdfs_network:
     name: hdfs_network
