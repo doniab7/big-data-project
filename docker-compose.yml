@@ -93,6 +93,24 @@ services:
       hdfs_network:
         ipv4_address: 172.20.0.6
 
+  spark:
+    image: bitnami/spark:3.3
+    container_name: spark-batch
+    hostname: spark
+    user: root
+    depends_on:
+      - namenode
+      - kafka
+    environment:
+      - SPARK_MODE=master
+    volumes:
+      - ./app:/app
+    ports:
+      - "8080:8080"  # Spark UI
+    networks:
+      hdfs_network:
+        ipv4_address: 172.20.0.7
+
 networks:
   hdfs_network:
     name: hdfs_network
