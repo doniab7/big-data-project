@@ -1,6 +1,11 @@
-# YouTube Livestream Comment Listener + Local Hadoop Cluster
+# YouTube Livestream Analytics
 
-This project allows you to **listen to YouTube livestream comments** and **store them locally**, with a setup to later process the data using a **Hadoop cluster** (running via Docker).
+A complete system for collecting, processing, and analyzing YouTube livestream comments using:
+
+- **Kafka** (real-time streaming)
+- **Hadoop HDFS** (storage)
+- **Spark** (batch and stream processing)
+- **Docker** (containerization)
 
 ---
 
@@ -11,7 +16,8 @@ app/
  └── local_test/
      ├── local_comment_listener.py     # Script to listen to livestream and save comments locally
      └── youtube_live_comments.txt     # Output file for collected comments
- └── youtube_comment_listener.py       # Another version of the script that will run on hdfs
+ ├── batch_processing/          # Spark batch processing job
+ ├── data_source/               # Kafka producer script
 hadoop_config/
  ├── core-site.xml                     # Core Hadoop configuration
  ├── hdfs-site.xml                     # HDFS settings (replication, paths)
@@ -56,7 +62,7 @@ python3 local_comment_listener.py
 
 ---
 
-## How to Start the Local Hadoop Cluster
+## How to Start the Cluster
 
 1. **Make sure Docker and Docker Compose are installed.**
 
@@ -67,12 +73,10 @@ docker-compose up -d
 ```
 
 - This launches:
-  - 1 Hadoop NameNode
-  - 2 Hadoop DataNodes
-
-3. **Access Hadoop UI:**
-
-- Namenode UI: [http://localhost:9870](http://localhost:9870)
+  - Hadoop NameNode + 2 DataNodes
+  - Zookeeper
+  - Kafka
+  - Spark master
 
 4. **(Optional) Scripts:**
 
@@ -86,3 +90,48 @@ docker-compose up -d
 - **VIDEO_ID**: (required) ID of the YouTube livestream you want to listen to.
 
 ---
+
+## Pipeline Execution
+
+1. **Create Kafka Topics**
+
+```bash
+.\create-topics.bat
+```
+
+Creates:
+
+- youtube-comments-raw (raw comments)
+
+- youtube-comments-batch (processed data)
+
+2. **Start Comment Producer**
+
+```bash
+python app/data_source/youtube_comment_producer.py
+```
+
+Collects comments in JSON format:
+
+```json
+{
+  "datetime": "2025-06-09 23:28:29",
+  "author": "username",
+  "message": "comment text"
+}
+```
+
+3. **Run Batch Processing**
+
+```bash
+.\app\batch_processing\run_job.bat
+```
+
+- Performs:
+
+  - Sentiment analysis (using TextBlob)
+  - Hate speech detection
+  - Word frequency analysis
+
+- Saves results to:
+  - HDFS (in Parquet format)
