@@ -39,7 +39,7 @@ def send_to_kafka(producer: Producer, comment_data: dict):
     try:
         
         # Convert to JSON string
-        json_data = json.dumps(comment_data).encode('utf-8')
+        json_data = json.dumps(comment_data, ensure_ascii=False).encode('utf-8')
         
         producer.produce(
             KAFKA_CONFIG["topic_raw"],
