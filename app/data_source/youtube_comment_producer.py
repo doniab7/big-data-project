@@ -9,8 +9,8 @@ from dotenv import load_dotenv
 
 KAFKA_CONFIG = {
     "bootstrap_servers": "127.0.0.1:9092", 
-    "topic_raw": "youtube_comments_raw",
-    "topic_batch": "youtube_comments_batch"
+    "topic_raw": "youtube-comments-raw",
+    "topic_batch": "youtube-comments-batch"
 }
 
 def create_kafka_producer():
