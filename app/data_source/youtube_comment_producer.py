@@ -8,7 +8,10 @@ import json
 from dotenv import load_dotenv
 
 KAFKA_CONFIG = {
-    "bootstrap_servers": "127.0.0.1:9092", 
+    # For external producers (running on host machine)
+    "bootstrap_servers": "localhost:9093", 
+    # For internal producers (running in containers)
+    "internal_bootstrap_servers": "kafka:9092",
     "topic_raw": "youtube-comments-raw",
     "topic_batch": "youtube-comments-batch"
 }
@@ -19,8 +22,10 @@ def create_kafka_producer():
         conf = {
             'bootstrap.servers': KAFKA_CONFIG["bootstrap_servers"],
             'client.id': 'youtube-comment-producer',
-            'request.timeout.ms': 10000,
-            'message.timeout.ms': 10000
+            'message.timeout.ms': 5000,
+            'retries': 5,
+            'retry.backoff.ms': 1000,
+            'socket.keepalive.enable': True
         }
         return Producer(conf)
     except Exception as e:

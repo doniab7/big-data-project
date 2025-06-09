@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, regexp_extract, to_timestamp, explode, split, count, desc, when, length
-from pyspark.sql.types import FloatType
+from pyspark.sql.functions import col, from_json, to_timestamp, explode, split, count, desc, when, length
+from pyspark.sql.types import FloatType, StructType, StructField, StringType
 from textblob import TextBlob
 import json
 from datetime import datetime
@@ -12,15 +12,24 @@ class DateTimeEncoder(json.JSONEncoder):
             return obj.isoformat()
         return super().default(obj)
 
-# Initialize Spark Session
+# Kafka configuration - use internal address when running in container
+kafka_bootstrap_servers = "kafka:9092"  # Internal Docker network address
+
+# Initialize Spark Session with proper Kafka package
 spark = SparkSession.builder \
     .appName("YouTubeCommentsProcessingWithJSONExport") \
     .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.0") \
+    .config("spark.driver.extraJavaOptions", "-Djava.security.auth.login.config=/opt/bitnami/spark/conf/kafka_client_jaas.conf") \
     .getOrCreate()
 
-# Kafka configuration
-kafka_bootstrap_servers = "kafka:9092"
 kafka_topic = "youtube-comments-batch"
+
+# Define the schema for the JSON data
+json_schema = StructType([
+    StructField("datetime", StringType()),
+    StructField("author", StringType()),
+    StructField("message", StringType())
+])
 
 # HDFS paths
 hdfs_namenode = "hdfs://namenode:9000"
@@ -39,29 +48,23 @@ df = spark.read \
     .option("endingOffsets", "latest") \
     .load()
 
-# Convert binary value to string
-comments_df = df.selectExpr("CAST(value AS STRING)")
+# Parse JSON data
+comments_df = df.selectExpr("CAST(value AS STRING) as json_string") \
+    .select(from_json(col("json_string"), json_schema).alias("data")) \
+    .select("data.*")
 
 # 2. Save raw data to HDFS
 comments_df.write \
     .mode("overwrite") \
-    .format("text") \
+    .format("json") \
     .save(raw_path)
 
-# 3. Process the data (parse timestamp, username, and comment)
-processed_df = comments_df.withColumn(
-    "timestamp", 
-    to_timestamp(
-        regexp_extract(col("value"), r"^\[(.*?)\]", 1), 
-        "yyyy-MM-dd HH:mm:ss"
-    )
-).withColumn(
-    "username",
-    regexp_extract(col("value"), r"^\[.*?\] (.*?):", 1)
-).withColumn(
-    "comment",
-    regexp_extract(col("value"), r"^\[.*?\] .*?: (.*)", 1)
-).drop("value")
+# 3. Process the data (parse timestamp and clean columns)
+processed_df = comments_df \
+    .withColumnRenamed("author", "username") \
+    .withColumnRenamed("message", "comment") \
+    .withColumn("timestamp", to_timestamp(col("datetime"), "yyyy-MM-dd HH:mm:ss")) \
+    .drop("datetime")
 
 # Save processed data
 processed_df.write \
@@ -72,8 +75,11 @@ processed_df.write \
 # 4. Sentiment Analysis
 def analyze_sentiment(text):
     try:
-        return TextBlob(text).sentiment.polarity
-    except:
+        if text:  # Ensure text is not None
+            return TextBlob(str(text).encode('utf-8').decode('utf-8')).sentiment.polarity
+        return 0.0
+    except Exception as e:
+        print(f"Error processing text: {e}")
         return 0.0
 
 sentiment_udf = spark.udf.register("sentiment_udf", analyze_sentiment, FloatType())
@@ -97,8 +103,14 @@ sentiment_df.write \
 # 5. Hate Speech Detection
 hate_keywords = ["hate", "stupid", "idiot", "kill", "die", "dead", "ugly", "dumb"]
 def detect_hate_speech(text):
-    text_lower = text.lower()
-    return any(keyword in text_lower for keyword in hate_keywords)
+    try:
+        if text:
+            text_lower = str(text).encode('utf-8').decode('utf-8').lower()
+            return any(keyword in text_lower for keyword in hate_keywords)
+        return False
+    except Exception as e:
+        print(f"Error in hate speech detection: {e}")
+        return False
 
 hate_speech_udf = spark.udf.register("hate_speech_udf", detect_hate_speech)
 hate_speech_df = processed_df.withColumn("is_hate_speech", hate_speech_udf(col("comment")))
@@ -168,7 +180,7 @@ results = {
 # 8. Save JSON results
 output_path = "/app/batch_processing/results.json"
 with open(output_path, "w") as f:
-    json.dump(results, f, indent=2, cls=DateTimeEncoder)
+    json.dump(results, f, indent=2, cls=DateTimeEncoder, ensure_ascii=False)
 
 print("\n=== Processing Complete ===")
 print(f"Results saved to {output_path}")
