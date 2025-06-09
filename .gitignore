@@ -45,3 +45,5 @@ hadoop_datanode2/
 
 # Kafka Data
 kafka_data/
+
+app/batch_processing/results.json
