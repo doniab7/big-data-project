@@ -34,3 +34,14 @@ var/
 # OS files
 .DS_Store
 Thumbs.db
+
+youtube_live_comments
+
+# Hadoop Data Directories
+hadoop_namenode/
+hadoop_datanode*/
+hadoop_datanode1/
+hadoop_datanode2/
+
+# Kafka Data
+kafka_data/
