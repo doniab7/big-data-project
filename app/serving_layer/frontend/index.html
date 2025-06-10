@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lambda Architecture - Serving Layer Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <header class="dashboard-header">
+            <h1>YouTube Comment Analysis - Lambda Architecture</h1>
+            <div class="status-indicator">
+                <span id="status-dot" class="status-dot online"></span>
+                <span id="status-text">System Online</span>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <!-- Batch Processing Metrics Card -->
+            <div class="card metrics-card">
+                <h2>Batch Processing Metrics</h2>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <span class="metric-value" id="total-comments">-</span>
+                        <span class="metric-label">Total Comments</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value" id="hate-percentage">-</span>
+                        <span class="metric-label">Hate Speech %</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value" id="avg-comment-length">-</span>
+                        <span class="metric-label">Avg Length</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value" id="sentiment-score">-</span>
+                        <span class="metric-label">Avg Sentiment</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real-time Metrics Card (kept for future real-time integration) -->
+            <div class="card metrics-card">
+                <h2>Real-time Metrics</h2>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <span class="metric-value" id="realtime-comments">-</span>
+                        <span class="metric-label">Live Comments</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value" id="alerts-today">-</span>
+                        <span class="metric-label">Alerts Today</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value" id="unique-users">-</span>
+                        <span class="metric-label">Unique Users</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-value" id="processing-rate">-</span>
+                        <span class="metric-label">Processing Rate</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card chart-card">
+                <h2>Sentiment Distribution</h2>
+                <canvas id="sentimentChart"></canvas>
+            </div>
+
+            <div class="card chart-card">
+                <h2>Comment Length Distribution</h2>
+                <canvas id="volumeChart"></canvas>
+            </div>
+
+            <div class="card logs-card">
+                <h2>System Activity Log</h2>
+                <div id="logs-container" class="logs-container">
+                    <!-- Logs will be populated here -->
+                </div>
+            </div>
+
+            <!-- Updated Keywords Card for Top Words -->
+            <div class="card keywords-card">
+                <h2>Top Words</h2>
+                <div id="keywords-container" class="keywords-container">
+                    <!-- Top words will be populated here -->
+                </div>
+            </div>
+
+            <!-- New Card for Comment Samples -->
+            <div class="card samples-card">
+                <h2>Recent Comment Samples</h2>
+                <div id="samples-container" class="samples-container">
+                    <!-- Comment samples will be populated here -->
+                </div>
+            </div>
+
+            <div class="card alerts-card">
+                <h2>Recent Alerts</h2>
+                <div id="alerts-container" class="alerts-container">
+                    <!-- Alerts will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/websocket.js"></script>
+</body>
+</html>

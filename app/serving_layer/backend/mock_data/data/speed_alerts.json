@@ -1,0 +1,22 @@
+{
+  "alerts": [
+    {
+      "timestamp": "2025-06-10T12:01:14.470318",
+      "event_type": "sentiment_shift",
+      "comment": {
+        "id": "comment_15672",
+        "user": "realalex44",
+        "original_text": "[MONITORED: UNUSUAL SENTIMENT PATTERN]",
+        "confidence_score": 0.68,
+        "detected_categories": [
+          "sudden_negative"
+        ],
+        "severity": "low"
+      },
+      "action_taken": "trend_analysis",
+      "notification_sent": true,
+      "processing_time_ms": 176,
+      "message": "Sentiment Shift - Sudden Negative detected with 68% confidence"
+    }
+  ]
+}

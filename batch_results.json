@@ -1,0 +1,215 @@
+{
+  "processed_comments": [
+    {
+      "timestamp": "2025-04-22T21:05:03",
+      "username": "ths",
+      "comment": ":smiling_face_with_sunglasses:@ishita har mard ek jaisa ni hota didi I'm the example"
+    },
+    {
+      "timestamp": "2025-04-22T21:05:03",
+      "username": "kunal",
+      "comment": "sirf mai dekhungaaa"
+    },
+    {
+      "timestamp": "2025-04-22T21:05:04",
+      "username": "Qala",
+      "comment": "diya cold water hurts the throat, if u consume it on a daily basis u might get health problems"
+    },
+    {
+      "timestamp": "2025-04-22T21:05:05",
+      "username": "Ishita Pattanayak",
+      "comment": "@ths bohot maarungi padhai krle chup chaap:loudly_crying_face::loudly_crying_face:...exams important hai breakup pe baad mein ro lena"
+    },
+    {
+      "timestamp": "2025-04-22T21:05:11",
+      "username": "Hagemaru",
+      "comment": "Hisokaaa pani pikr kam chala le"
+    },
+    {
+      "timestamp": "2025-04-22T21:05:18",
+      "username": "Alizee",
+      "comment": ":skull:"
+    },
+    {
+      "timestamp": "2025-04-22T21:05:20",
+      "username": "sakura",
+      "comment": "Ray lol what do you mean?"
+    },
+    {
+      "timestamp": "2025-04-22T21:05:41",
+      "username": "Hagemaru",
+      "comment": "wow meri behen mujhi se meow :moai:"
+    },
+    {
+      "timestamp": "2025-04-22T21:05:47",
+      "username": "Alizee",
+      "comment": "chirag or bye"
+    },
+    {
+      "timestamp": "2025-04-22T21:05:44",
+      "username": "Ray",
+      "comment": "sakura if you know you know"
+    }
+  ],
+  "sentiment_samples": [
+    {
+      "username": "ths",
+      "comment": ":smiling_face_with_sunglasses:@ishita har mard ek jaisa ni hota didi I'm the example",
+      "sentiment_score": 0.0,
+      "sentiment": "neutral"
+    },
+    {
+      "username": "kunal",
+      "comment": "sirf mai dekhungaaa",
+      "sentiment_score": 0.0,
+      "sentiment": "neutral"
+    },
+    {
+      "username": "Qala",
+      "comment": "diya cold water hurts the throat, if u consume it on a daily basis u might get health problems",
+      "sentiment_score": -0.30000001192092896,
+      "sentiment": "negative"
+    },
+    {
+      "username": "Ishita Pattanayak",
+      "comment": "@ths bohot maarungi padhai krle chup chaap:loudly_crying_face::loudly_crying_face:...exams important hai breakup pe baad mein ro lena",
+      "sentiment_score": 0.4000000059604645,
+      "sentiment": "positive"
+    },
+    {
+      "username": "Hagemaru",
+      "comment": "Hisokaaa pani pikr kam chala le",
+      "sentiment_score": 0.0,
+      "sentiment": "neutral"
+    },
+    {
+      "username": "Alizee",
+      "comment": ":skull:",
+      "sentiment_score": 0.0,
+      "sentiment": "neutral"
+    },
+    {
+      "username": "sakura",
+      "comment": "Ray lol what do you mean?",
+      "sentiment_score": 0.24375000596046448,
+      "sentiment": "positive"
+    },
+    {
+      "username": "Hagemaru",
+      "comment": "wow meri behen mujhi se meow :moai:",
+      "sentiment_score": 0.10000000149011612,
+      "sentiment": "neutral"
+    },
+    {
+      "username": "Alizee",
+      "comment": "chirag or bye",
+      "sentiment_score": 0.0,
+      "sentiment": "neutral"
+    },
+    {
+      "username": "Ray",
+      "comment": "sakura if you know you know",
+      "sentiment_score": 0.0,
+      "sentiment": "neutral"
+    }
+  ],
+  "sentiment_distribution": {
+    "positive": 3,
+    "neutral": 11,
+    "negative": 2
+  },
+  "top_words": [
+    {
+      "word": "you",
+      "count": 3
+    },
+    {
+      "word": "know",
+      "count": 2
+    },
+    {
+      "word": "..thanks",
+      "count": 2
+    },
+    {
+      "word": "didi",
+      "count": 1
+    },
+    {
+      "word": "I'm",
+      "count": 1
+    },
+    {
+      "word": "diya",
+      "count": 1
+    },
+    {
+      "word": "jaisa",
+      "count": 1
+    },
+    {
+      "word": "chala",
+      "count": 1
+    },
+    {
+      "word": "@ths",
+      "count": 1
+    },
+    {
+      "word": "saath",
+      "count": 1
+    },
+    {
+      "word": "maarungi",
+      "count": 1
+    },
+    {
+      "word": "hota",
+      "count": 1
+    },
+    {
+      "word": "lost",
+      "count": 1
+    },
+    {
+      "word": "kese",
+      "count": 1
+    },
+    {
+      "word": "Ray",
+      "count": 1
+    },
+    {
+      "word": "behen",
+      "count": 1
+    },
+    {
+      "word": "sirf",
+      "count": 1
+    },
+    {
+      "word": "hoti",
+      "count": 1
+    },
+    {
+      "word": "lol",
+      "count": 1
+    },
+    {
+      "word": ":moai:",
+      "count": 1
+    }
+  ],
+  "hate_speech_metrics": {
+    "total_comments": 16,
+    "hate_speech_count": 2,
+    "hate_speech_percentage": 12.5
+  },
+  "comment_length_stats": {
+    "count": "16",
+    "mean": 39.625,
+    "stddev": 34.20112083933312,
+    "min": 7,
+    "max": 133
+  }
+}
