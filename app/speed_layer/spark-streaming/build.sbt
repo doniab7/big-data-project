@@ -1,9 +1,11 @@
-//Purpose: Scala project dependencies
+name := "spark-streaming"
 
-//TODO:
+version := "0.1"
 
-//Add Spark Streaming and Kafka dependencies
+scalaVersion := "2.12.15" 
 
-//Add Cassandra connector
-
-//Configure build settings
+libraryDependencies ++= Seq(
+  "org.apache.spark" %% "spark-core" % "3.3.0",
+  "org.apache.spark" %% "spark-sql" % "3.3.0",
+  "org.apache.spark" %% "spark-sql-kafka-0-10" % "3.3.0"
+)
